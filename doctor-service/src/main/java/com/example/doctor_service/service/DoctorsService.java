@@ -4,7 +4,9 @@ import com.example.doctor_service.dtos.DoctorPatchDTO;
 import com.example.doctor_service.models.Doctors;
 import com.example.doctor_service.repository.DoctorsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,7 +27,7 @@ public class DoctorsService {
 
     public Doctors showDoctorById(Long idDoctor) {
         return doctorsRepository.findById(idDoctor)
-                .orElseThrow(() -> new RuntimeException("Doctor not found with ID: " + idDoctor));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found."));
     }
 
 

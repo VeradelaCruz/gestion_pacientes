@@ -1,8 +1,9 @@
-package com.example.appointment_service.models;
+package com.example.appointment_service.dtos;
 
 import com.example.appointment_service.enums.AppointmentStatus;
-import jakarta.persistence.*;
-import jakarta.validation.Valid;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,40 +14,25 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Appointment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="appointment_id")
+public class AppointmentPatchDTO {
     private Long idAppointment;
-
     @NotNull(message = "Appointment date is required")
-    @Column(name="appointment_date")
-    private LocalDate appointmentDate;
 
+    private LocalDate appointmentDate;
     @NotNull(message = "Appointment time is required")
-    @Column(name="appointment_time")
+
     private LocalTime appointmentTime;
 
     @NotBlank(message = "Reason is required")
     @Size(max = 60, message = "Reason must be 60 characters or less")
     private String reason;
-
     @NotNull(message = "Appointment status is required")
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-    @NotNull(message = "Patient ID is required")
-    @Column(name = "patient_id")
     private Long patientId;
-
-    @NotNull(message = "Doctor ID is required")
-    @Column(name = "doctor_id")
     private Long doctorId;
-
-
-
 }

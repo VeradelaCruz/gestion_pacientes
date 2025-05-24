@@ -1,5 +1,6 @@
 package com.example.appointment_service.controller;
 
+import com.example.appointment_service.dtos.AppointmentPatchDTO;
 import com.example.appointment_service.dtos.AppointmentResponseDTO;
 import com.example.appointment_service.models.Appointment;
 import com.example.appointment_service.service.AppointmentService;
@@ -54,12 +55,25 @@ public class AppointmentController {
 
     @GetMapping("/getAppointmentByPatient/{idPatient}")
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentByPatient(@PathVariable Long idPatient) {
-        List<Appointment> appointments = appointmentService.findAppointmentsByDoctor(idPatient);
+        List<Appointment> appointments = appointmentService.findAppointmentsByPatient(idPatient);
         List<AppointmentResponseDTO> responseList = appointments.stream()
                 .map(appointment -> appointmentService.buildAppointmentResponse(appointment))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(responseList);
+    }
+
+    @PatchMapping("/changeAppointment/{idAppointment}")
+    public ResponseEntity<Appointment> changeAppointment(@PathVariable Long idAppointment,
+                                               @Valid @RequestBody AppointmentPatchDTO appointmentPatchDTO){
+       Appointment appointment= appointmentService.updateAppointment(idAppointment, appointmentPatchDTO);
+        return ResponseEntity.ok(appointment);
+    }
+
+    @GetMapping("/getCompletedAppointment")
+    public ResponseEntity<List<Appointment>> getAppointmentByStatus(){
+        List<Appointment> appointmentList=appointmentService.findCompletedAppointments();
+        return ResponseEntity.ok(appointmentList);
     }
 
 }
