@@ -24,10 +24,8 @@ public class AppointmentController {
         try{
             Appointment newAppointment= appointmentService.createAppointment(appointment);
             return ResponseEntity.status(HttpStatus.CREATED).body(newAppointment);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Error, appointment not made: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -43,9 +41,9 @@ public class AppointmentController {
         return ResponseEntity.ok(responseList);
     }
 
-    @GetMapping("/getAppointmentByDoctor/{idDoctor}")
-    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentByDoctor(@PathVariable Long idDoctor) {
-        List<Appointment> appointments = appointmentService.findAppointmentsByDoctor(idDoctor);
+    @GetMapping("/getAppointmentByDoctor/{doctorId}")
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentByDoctor(@PathVariable Long doctorId) {
+        List<Appointment> appointments = appointmentService.findAppointmentsByDoctor(doctorId);
         List<AppointmentResponseDTO> responseList = appointments.stream()
                 .map(appointment -> appointmentService.buildAppointmentResponse(appointment))
                 .collect(Collectors.toList());
@@ -53,9 +51,9 @@ public class AppointmentController {
         return ResponseEntity.ok(responseList);
     }
 
-    @GetMapping("/getAppointmentByPatient/{idPatient}")
-    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentByPatient(@PathVariable Long idPatient) {
-        List<Appointment> appointments = appointmentService.findAppointmentsByPatient(idPatient);
+    @GetMapping("/getAppointmentByPatient/{patientId}")
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentByPatient(@PathVariable Long patientId) {
+        List<Appointment> appointments = appointmentService.findAppointmentsByPatient(patientId);
         List<AppointmentResponseDTO> responseList = appointments.stream()
                 .map(appointment -> appointmentService.buildAppointmentResponse(appointment))
                 .collect(Collectors.toList());

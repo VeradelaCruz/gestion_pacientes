@@ -19,17 +19,9 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class AppointmentPatchDTO {
     private Long idAppointment;
-    @NotNull(message = "Appointment date is required")
-
     private LocalDate appointmentDate;
-    @NotNull(message = "Appointment time is required")
-
     private LocalTime appointmentTime;
-
-    @NotBlank(message = "Reason is required")
-    @Size(max = 60, message = "Reason must be 60 characters or less")
     private String reason;
-    @NotNull(message = "Appointment status is required")
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 

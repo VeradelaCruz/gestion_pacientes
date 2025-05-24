@@ -30,8 +30,21 @@ public class AppointmentService {
     private PatientClient patientClient;
     //Add appointment
     public Appointment createAppointment(Appointment appointment){
+        DoctorDTO doctor = doctorClient.getDoctorById(appointment.getDoctorId());
+        if (doctor == null) {
+            throw new IllegalArgumentException("Doctor with ID " + appointment.getDoctorId() + " does not exist");
+        }
+
+        // Validar que el paciente existe
+        PatientDTO patient = patientClient.getPatientById(appointment.getPatientId());
+        if (patient == null) {
+            throw new IllegalArgumentException("Patient with ID " + appointment.getPatientId() + " does not exist");
+        }
+
+        // Si pasa validaciones, guardar la cita
         return appointmentRepository.save(appointment);
     }
+
     //show all appointments:
     public List<Appointment> showAllAppointments() {
         return appointmentRepository.findAll();
@@ -67,6 +80,7 @@ public class AppointmentService {
         PatientDTO patient= patientClient.getPatientById(appointment.getPatientId());
 
         AppointmentResponseDTO response = new AppointmentResponseDTO();
+        response.setId(appointment.getIdAppointment());
         response.setAppointmentDate(appointment.getAppointmentDate());
         response.setAppointmentTime(appointment.getAppointmentTime());
         response.setReason(appointment.getReason());
@@ -77,20 +91,20 @@ public class AppointmentService {
     }
 
     //get an appointment by doctor:
-    public List<Appointment> findAppointmentsByDoctor(Long idDoctor){
-        List<Appointment> appointments = appointmentRepository.findByDoctor(idDoctor);
+    public List<Appointment> findAppointmentsByDoctor(Long doctorId){
+        List<Appointment> appointments = appointmentRepository.findByDoctor(doctorId);
         if (appointments.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No appointments found for doctor with ID: " + idDoctor);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No appointments found for doctor with ID: " + doctorId);
         }
         return appointments;
 
     }
 
     //get an appointment by patient:
-    public List<Appointment> findAppointmentsByPatient(Long idPatient){
-        List<Appointment> appointments = appointmentRepository.findByPatient(idPatient);
+    public List<Appointment> findAppointmentsByPatient(Long patientId){
+        List<Appointment> appointments = appointmentRepository.findByPatient(patientId);
         if (appointments.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No appointments found for patient with ID: " + idPatient);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No appointments found for patient with ID: " + patientId);
         }
         return appointments;
 

@@ -11,10 +11,10 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment,Long > {
 
     @Query("SELECT a FROM Appointment a WHERE a.doctorId = :doctorId")
-    List<Appointment> findByDoctor(@Param("doctorId") Long idDoctor);
+    List<Appointment> findByDoctor(@Param("doctorId") Long doctorId);
 
     @Query("SELECT a FROM Appointment a WHERE a.patientId = :patientId")
-    List<Appointment> findByPatient(@Param("patientId") Long idPatient);
+    List<Appointment> findByPatient(@Param("patientId") Long patientId);
 
     @Query("SELECT a FROM Appointment a WHERE a.status = :status")
     List<Appointment> findCompletedAppointments(@Param("status") AppointmentStatus status);
