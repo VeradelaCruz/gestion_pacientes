@@ -1,6 +1,8 @@
 package com.example.doctor_service.service;
 
+import com.example.doctor_service.client.PatientClient;
 import com.example.doctor_service.dtos.DoctorPatchDTO;
+import com.example.doctor_service.dtos.PatientDTO;
 import com.example.doctor_service.models.Doctors;
 import com.example.doctor_service.repository.DoctorsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+
 
 @Service
 public class DoctorsService {
     @Autowired
     DoctorsRepository doctorsRepository;
+    @Autowired
+    PatientClient patientClient;
 
     public List<Doctors> createDoctor(List<Doctors> doctors){
         return doctorsRepository.saveAll(doctors);
@@ -96,6 +100,12 @@ public class DoctorsService {
             throw new RuntimeException("No doctors found with lastName: " + lastName);
         }
         return doctors;
+    }
+
+    public List<PatientDTO> showPatients(Long idDoctor){
+        List<PatientDTO> patientDTOS = patientClient.getPatientsByDoctorId(idDoctor);
+        return patientDTOS;
+
     }
 
 }

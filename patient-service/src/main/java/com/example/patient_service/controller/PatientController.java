@@ -1,6 +1,9 @@
 package com.example.patient_service.controller;
 
+import com.example.patient_service.dtos.DoctorSpecialtyDTO;
+import com.example.patient_service.dtos.PatientDTO;
 import com.example.patient_service.dtos.PatientPatchDTO;
+import com.example.patient_service.dtos.PatientResponseDTO;
 import com.example.patient_service.models.Patient;
 import com.example.patient_service.service.PatientService;
 import jakarta.validation.Valid;
@@ -17,8 +20,8 @@ public class PatientController {
     PatientService patientService;
 
     @PostMapping("/addPatient")
-    public List<Patient> addPatient (@RequestBody List<Patient> patientList){
-        return patientService.createPatient(patientList);
+    public Patient addPatient (@RequestBody Patient patient){
+        return patientService.createPatient(patient);
     }
 
     @GetMapping("/getAllPatients")
@@ -27,8 +30,15 @@ public class PatientController {
     }
 
     @GetMapping("/getPatientById/{idPatient}")
-    public Patient getPatientById(@PathVariable Long idPatient){
-        return patientService.showPatientById(idPatient);
+    public ResponseEntity<PatientResponseDTO>getPatientById(@PathVariable Long idPatient) {
+        PatientResponseDTO dto = patientService.showPatientWithDoctor(idPatient);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/getPatientEntityById/{idPatient}")
+    public ResponseEntity<PatientResponseDTO>getPatientEntityById(@PathVariable Long idPatient) {
+        PatientResponseDTO dto = patientService.showPatientWithDoctor(idPatient);
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/updatePatient/{idPatient}")
@@ -66,4 +76,16 @@ public class PatientController {
         List<Patient> patients = patientService.showByLastName(lastName);
         return ResponseEntity.ok(patients);
     }
+
+    @GetMapping("/findDoctorBySpecialty/{specialty}")
+    public ResponseEntity<?> getDoctorBySpecialty(@PathVariable String specialty){
+        List<DoctorSpecialtyDTO> doctorSpecialtyDTOS = patientService.showDoctorSpecialty(specialty);
+        return ResponseEntity.ok(doctorSpecialtyDTOS);
+    }
+
+    @GetMapping("/findPatientByDoctorId/{doctorId}")
+    public List<PatientDTO> getPatientsByDoctorId(@PathVariable Long doctorId) {
+        return patientService.showPatientDTOByDoctorId(doctorId);
+    }
+
 }

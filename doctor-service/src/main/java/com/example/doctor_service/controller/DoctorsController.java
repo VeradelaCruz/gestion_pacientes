@@ -1,6 +1,7 @@
 package com.example.doctor_service.controller;
 
 import com.example.doctor_service.dtos.DoctorPatchDTO;
+import com.example.doctor_service.dtos.PatientDTO;
 import com.example.doctor_service.models.Doctors;
 import com.example.doctor_service.service.DoctorsService;
 import jakarta.validation.Valid;
@@ -69,6 +70,11 @@ public class DoctorsController {
     public ResponseEntity<?> getDoctorByLastName(@PathVariable String lastName){
         List<Doctors> doctors = doctorsService.showByLastName(lastName);
         return ResponseEntity.ok(doctors);
+    }
+    @GetMapping("/findPatientByDoctorId/{idDoctor}")
+    public ResponseEntity<List<PatientDTO>> getPatientsByDoctor(@PathVariable Long idDoctor) {
+        List<PatientDTO> patients = doctorsService.showPatients(idDoctor);
+        return ResponseEntity.ok(patients);
     }
 
 

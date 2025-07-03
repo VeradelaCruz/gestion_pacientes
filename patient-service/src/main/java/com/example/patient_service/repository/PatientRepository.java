@@ -14,4 +14,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     @Query("SELECT d FROM Patient d WHERE LOWER(d.lastName) = LOWER(:lastName)")
     List<Patient> findByLastName(@Param("lastName") String lastName);
+
+    @Query("SELECT d FROM Patient d WHERE d.doctorId = :doctorId")
+    List<Patient> findByDoctorId(@Param("doctorId")Long doctorId);
 }

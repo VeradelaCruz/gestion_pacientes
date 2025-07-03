@@ -32,6 +32,7 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     @Column(name = "blood_type")
     private BloodType bloodType;
+    private Long doctorId;
 
 
 }

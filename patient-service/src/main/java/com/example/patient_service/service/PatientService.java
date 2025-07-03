@@ -1,6 +1,8 @@
 package com.example.patient_service.service;
 
-import com.example.patient_service.dtos.PatientPatchDTO;
+import com.example.patient_service.client.DoctorClient;
+import com.example.patient_service.dtos.*;
+import com.example.patient_service.mapper.PatientMapper;
 import com.example.patient_service.models.Patient;
 import com.example.patient_service.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,29 +11,64 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
     @Autowired
     PatientRepository patientRepository;
 
-    public List<Patient> createPatient(List<Patient> patients){
-        return patientRepository.saveAll(patients);
+    @Autowired
+    DoctorClient doctorClient;
+
+    @Autowired
+    PatientMapper patientMapper;
+
+    public Patient createPatient(Patient patient){
+        if (patient.getDoctorId() == null) {
+            throw new RuntimeException("Doctor ID is required");
+        }
+        try {
+            doctorClient.getDoctorById(patient.getDoctorId());
+        } catch (Exception e) {
+            throw new RuntimeException("Doctor with ID " + patient.getDoctorId() + " not found");
+        }
+        return patientRepository.save(patient);
     }
 
     public List<Patient> showAllPatients(){
         return patientRepository.findAll();
     }
 
-    public Patient showPatientById(Long idPatient) {
+    public PatientResponseDTO showPatientWithDoctor(Long idPatient) {
+        Patient patient = patientRepository.findById(idPatient)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found."));
+
+        DoctorDTO doctor = doctorClient.getDoctorById(patient.getDoctorId());
+
+        PatientResponseDTO responseDTO = new PatientResponseDTO();
+        responseDTO.setIdPatient(patient.getIdPatient());
+        responseDTO.setFirstName(patient.getFirstName());
+        responseDTO.setLastName(patient.getLastName());
+        responseDTO.setEmail(patient.getEmail());
+        responseDTO.setPhoneNumber(patient.getPhoneNumber());
+        responseDTO.setGender(patient.getGender());
+        responseDTO.setAddress(patient.getAddress());
+        responseDTO.setDateOfBirth(patient.getDateOfBirth());
+        responseDTO.setBloodType(patient.getBloodType());
+        responseDTO.setDoctor(doctor);
+
+        return responseDTO;
+
+    }
+    public Patient getPatientEntityById(Long idPatient) {
         return patientRepository.findById(idPatient)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found."));
     }
 
 
     public Patient updatePatient(Long idPatient, Patient patient){
-        Patient updatedPatient = showPatientById(idPatient);
+        Patient updatedPatient = getPatientEntityById(idPatient);
         updatedPatient.setFirstName(patient.getFirstName());
         updatedPatient.setLastName(patient.getLastName());
         updatedPatient.setEmail(patient.getEmail());
@@ -40,12 +77,13 @@ public class PatientService {
         updatedPatient.setPhoneNumber(patient.getPhoneNumber());
         updatedPatient.setBloodType(patient.getBloodType());
         updatedPatient.setDateOfBirth(patient.getDateOfBirth());
+        updatedPatient.setDoctorId(patient.getDoctorId());
 
         return patientRepository.save(updatedPatient);
     }
 
     public Patient patchPatient(Long idPatient, PatientPatchDTO patientPatchDTO){
-        Patient patient= showPatientById(idPatient);
+        Patient patient= getPatientEntityById(idPatient);
         if (patientPatchDTO.getFirstName() != null) {
             patient.setFirstName(patientPatchDTO.getFirstName());
         }
@@ -76,14 +114,14 @@ public class PatientService {
     }
 
     public void removePatient(Long idPatient){
-        Patient patient= showPatientById(idPatient);
+        Patient patient= getPatientEntityById(idPatient);
         patientRepository.delete(patient);
     }
 
     public List<Patient> showByName(String firstName) {
         List<Patient> patients = patientRepository.findByFirstName(firstName);
         if (patients.isEmpty()) {
-            throw new RuntimeException("No doctors found with firstName: " + firstName);
+            throw new RuntimeException("No patient found with firstName: " + firstName);
         }
         return patients;
     }
@@ -92,9 +130,32 @@ public class PatientService {
     public List<Patient> showByLastName(String lastName){
         List<Patient> patients = patientRepository.findByLastName(lastName);
         if (patients.isEmpty()) {
-            throw new RuntimeException("No doctors found with lastName: " + lastName);
+            throw new RuntimeException("No patient found with lastName: " + lastName);
         }
         return patients;
     }
+
+    public List<DoctorSpecialtyDTO> showDoctorSpecialty(String specialty){
+        List<DoctorSpecialtyDTO> doctorSpecialtyDTOS = doctorClient.getDoctorBySpecialty(specialty);
+        return doctorSpecialtyDTOS;
+
+    }
+
+    public List<PatientDTO> showPatientDTOByDoctorId(Long doctorId) {
+        List<Patient> patients = patientRepository.findByDoctorId(doctorId);
+        if (patients == null || patients.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "No patients found for doctor with ID: " + doctorId
+            );
+        }
+        return patientMapper.toDtoList(patients);
+    }
+
+
+
+
+
+
 
 }
