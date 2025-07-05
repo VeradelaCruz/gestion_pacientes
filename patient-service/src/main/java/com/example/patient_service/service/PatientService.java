@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class PatientService {
@@ -25,13 +25,13 @@ public class PatientService {
     PatientMapper patientMapper;
 
     public Patient createPatient(Patient patient){
-        if (patient.getDoctorId() == null) {
+        if (patient.getIdDoctor() == null) {
             throw new RuntimeException("Doctor ID is required");
         }
         try {
-            doctorClient.getDoctorById(patient.getDoctorId());
+            doctorClient.getDoctorById(patient.getIdDoctor());
         } catch (Exception e) {
-            throw new RuntimeException("Doctor with ID " + patient.getDoctorId() + " not found");
+            throw new RuntimeException("Doctor with ID " + patient.getIdDoctor() + " not found");
         }
         return patientRepository.save(patient);
     }
@@ -44,7 +44,7 @@ public class PatientService {
         Patient patient = patientRepository.findById(idPatient)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found."));
 
-        DoctorDTO doctor = doctorClient.getDoctorById(patient.getDoctorId());
+        DoctorDTO doctor = doctorClient.getDoctorById(patient.getIdDoctor());
 
         PatientResponseDTO responseDTO = new PatientResponseDTO();
         responseDTO.setIdPatient(patient.getIdPatient());
@@ -77,7 +77,7 @@ public class PatientService {
         updatedPatient.setPhoneNumber(patient.getPhoneNumber());
         updatedPatient.setBloodType(patient.getBloodType());
         updatedPatient.setDateOfBirth(patient.getDateOfBirth());
-        updatedPatient.setDoctorId(patient.getDoctorId());
+        updatedPatient.setDoctorId(patient.getIdDoctor());
 
         return patientRepository.save(updatedPatient);
     }
@@ -141,12 +141,12 @@ public class PatientService {
 
     }
 
-    public List<PatientDTO> showPatientDTOByDoctorId(Long doctorId) {
-        List<Patient> patients = patientRepository.findByDoctorId(doctorId);
+    public List<PatientDTO> showPatientDTOByDoctorId(Long idDoctor) {
+        List<Patient> patients = patientRepository.findByDoctorId(idDoctor);
         if (patients == null || patients.isEmpty()) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "No patients found for doctor with ID: " + doctorId
+                    "No patients found for doctor with ID: " + idDoctor
             );
         }
         return patientMapper.toDtoList(patients);

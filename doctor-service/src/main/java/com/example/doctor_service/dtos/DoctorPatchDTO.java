@@ -21,4 +21,61 @@ public class DoctorPatchDTO {
     @Size(min = 6, max = 15, message = "The licence number must be between 6 y 15 characters")
     private String licenceNumber;
     private AvailableDays availableDays;
+
+    public Long getIdDoctor() {
+        return idDoctor;
+    }
+
+    public void setIdDoctor(Long idDoctor) {
+        this.idDoctor = idDoctor;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getLicenceNumber() {
+        return licenceNumber;
+    }
+
+    public void setLicenceNumber(String licenceNumber) {
+        this.licenceNumber = licenceNumber;
+    }
+
+    public AvailableDays getAvailableDays() {
+        return availableDays;
+    }
+
+    public void setAvailableDays(AvailableDays availableDays) {
+        this.availableDays = availableDays;
+    }
+
 }

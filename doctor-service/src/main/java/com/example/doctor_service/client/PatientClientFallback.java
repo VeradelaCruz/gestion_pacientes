@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public class PatientClientFallback implements PatientClient{
-    public List<PatientDTO> getPatientsByDoctorId(Long doctorId) {
+    public List<PatientDTO> getPatientsByDoctorId(Long idDoctor) {
         // Mensaje por defecto o lista vacía
         System.out.println("Fallback: Patient service is not available. Returning empty list.");
         return Collections.emptyList();

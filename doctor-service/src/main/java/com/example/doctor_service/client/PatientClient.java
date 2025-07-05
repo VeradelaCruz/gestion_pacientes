@@ -9,7 +9,7 @@ import java.util.List;
 
 @FeignClient(name = "patient-service", url = "http://localhost:8082",fallback = PatientClientFallback.class)
 public interface PatientClient {
-    @GetMapping("/findPatientByDoctorId/{doctorId}")
-    List<PatientDTO> getPatientsByDoctorId(@PathVariable("doctorId") Long doctorId);
+    @GetMapping("/patient/findPatientByDoctorId/{idDoctor}")
+    List<PatientDTO> getPatientsByDoctorId(@PathVariable("idDoctor") Long idDoctor);
 }
 

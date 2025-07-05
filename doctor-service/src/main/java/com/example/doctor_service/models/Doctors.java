@@ -31,4 +31,68 @@ public class Doctors {
     private AvailableDays availableDays;
     private String specialty;
 
+    public Long getIdDoctor() {
+        return idDoctor;
+    }
+
+    public void setIdDoctor(Long idDoctor) {
+        this.idDoctor = idDoctor;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getLicenceNumber() {
+        return licenceNumber;
+    }
+
+    public void setLicenceNumber(String licenceNumber) {
+        this.licenceNumber = licenceNumber;
+    }
+
+    public AvailableDays getAvailableDays() {
+        return availableDays;
+    }
+
+    public void setAvailableDays(AvailableDays availableDays) {
+        this.availableDays = availableDays;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
+
 }

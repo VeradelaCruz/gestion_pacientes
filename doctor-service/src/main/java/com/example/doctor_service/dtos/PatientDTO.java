@@ -9,10 +9,51 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientDTO {private Long idPatient;
+public class PatientDTO {
+    private Long idPatient;
     private String firstName;
     private  String lastName;
     private String bloodType;
     private LocalDate dateOfBirth;
-    private Long doctorId;
+    private Long idDoctor;
+
+    public Long getIdDoctor() {
+        return idDoctor;
+    }
+
+    public void setIdDoctor(Long idDoctor) {
+        this.idDoctor = idDoctor;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
 }
