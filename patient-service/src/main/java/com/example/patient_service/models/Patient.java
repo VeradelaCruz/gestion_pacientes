@@ -111,7 +111,7 @@ public class Patient {
         return idDoctor;
     }
 
-    public void setDoctorId(Long idDoctor) {
+    public void setIdDoctor(Long idDoctor) {
         this.idDoctor = idDoctor;
     }
 }

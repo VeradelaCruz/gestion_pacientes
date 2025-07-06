@@ -77,7 +77,7 @@ public class PatientService {
         updatedPatient.setPhoneNumber(patient.getPhoneNumber());
         updatedPatient.setBloodType(patient.getBloodType());
         updatedPatient.setDateOfBirth(patient.getDateOfBirth());
-        updatedPatient.setDoctorId(patient.getIdDoctor());
+        updatedPatient.setIdDoctor(patient.getIdDoctor());
 
         return patientRepository.save(updatedPatient);
     }
@@ -114,7 +114,7 @@ public class PatientService {
     }
 
     public void removePatient(Long idPatient){
-        Patient patient= getPatientEntityById(idPatient);
+        Patient patient = getPatientEntityById(idPatient);
         patientRepository.delete(patient);
     }
 
@@ -138,7 +138,6 @@ public class PatientService {
     public List<DoctorSpecialtyDTO> showDoctorSpecialty(String specialty){
         List<DoctorSpecialtyDTO> doctorSpecialtyDTOS = doctorClient.getDoctorBySpecialty(specialty);
         return doctorSpecialtyDTOS;
-
     }
 
     public List<PatientDTO> showPatientDTOByDoctorId(Long idDoctor) {
