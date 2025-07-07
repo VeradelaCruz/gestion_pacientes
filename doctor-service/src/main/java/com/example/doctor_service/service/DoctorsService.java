@@ -17,9 +17,9 @@ import java.util.NoSuchElementException;
 @Service
 public class DoctorsService {
     @Autowired
-    DoctorsRepository doctorsRepository;
+    private DoctorsRepository doctorsRepository;
     @Autowired
-    PatientClient patientClient;
+    private PatientClient patientClient;
 
     public List<Doctors> createDoctor(List<Doctors> doctors){
         return doctorsRepository.saveAll(doctors);
