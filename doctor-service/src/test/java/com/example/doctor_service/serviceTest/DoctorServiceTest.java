@@ -1,7 +1,6 @@
-package com.example.doctor_service;
+package com.example.doctor_service.serviceTest;
 
 import com.example.doctor_service.client.PatientClient;
-import com.example.doctor_service.dtos.PatientDTO;
 import com.example.doctor_service.models.AvailableDays;
 import com.example.doctor_service.models.Doctors;
 import com.example.doctor_service.repository.DoctorsRepository;
@@ -37,7 +36,7 @@ public class DoctorServiceTest {
     private DoctorsService doctorsService;
 
     @Test
-    void updateDoctor_WhenDoctorExists_ReturnsDoctor() {
+    void updateDoctor_whenValidDoctor_thenReturnsUpdatedDoctor() {
         // Arrange
         Long idDoctor = 4L;
 
@@ -140,14 +139,15 @@ public class DoctorServiceTest {
         assertEquals("No doctors found with lastName: " + lastName, e.getMessage());
 
         // Verificar que se llamó al repositorio con ese parámetro:
-        verify(doctorsRepository.findByLastName(lastName));
+        verify(doctorsRepository).findByLastName(lastName);
+
 
     }
 
     //Prueba unitaria del método createDoctor:
     //  Usando ArgumentCaptor
     @Test
-    void crateDoctor_ThenReturnDoctor(){
+    void createDoctor_ThenReturnDoctor(){
         //Arrange:
         List<Doctors> doctorsList= new ArrayList<>();
         Doctors doctors= new Doctors();
@@ -160,7 +160,8 @@ public class DoctorServiceTest {
         doctorsService.createDoctor(doctorsList);
 
         // ArgumentCaptor para lista de Doctors (cast necesario)
-        ArgumentCaptor<List<Doctors>> captor = ArgumentCaptor.forClass((Class) List.class);
+        ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
+
 
         // Verificamos que se llamó a saveAll y capturamos la lista pasada
         verify(doctorsRepository).saveAll(captor.capture());
@@ -199,7 +200,7 @@ public class DoctorServiceTest {
 
     //En caso de no encontrar un doctor:
     @Test
-    void showDoctorById_WhenDoctorDoesNotExist_ThenException() {
+    void showDoctorById_whenDoctorMissing_thenThrowsNotFound() {
         // Arrange
         Long id = 3L;
         when(doctorsRepository.findById(id)).thenReturn(Optional.empty());
