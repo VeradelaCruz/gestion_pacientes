@@ -10,6 +10,7 @@ import lombok.*;
 @Entity @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "doctors")
 public class Doctors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +28,6 @@ public class Doctors {
     @Column(name = "licence_number")
     private String licenceNumber;
     @Embedded
-    @Column(name = "available_days")
     private AvailableDays availableDays;
     private String specialty;
 

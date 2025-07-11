@@ -25,3 +25,5 @@ eureka:
 feign:
   circuitbreaker:
     enabled: true
+
+
