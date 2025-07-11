@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  eureka-service:
+    build: eureka-service
+    mem_limit: 512m
+    ports:
+      - "8761:8761"
+    networks:
+      - gestionpacientes-network
+
+  patient-service:
+    build: patient-service
+    mem_limit: 512m
+    ports:
+      - "8082:8082"
+    networks:
+      - gestionpacientes-network
+    depends_on:
+      - eureka-service
+
+  doctor-service:
+    build: doctor-service
+    mem_limit: 512m
+    ports:
+      - "8081:8081"
+    networks:
+      - gestionpacientes-network
+    depends_on:
+      - eureka-service
+
+networks:
+  gestionpacientes-network:
+    driver: bridge

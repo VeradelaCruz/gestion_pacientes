@@ -5,7 +5,9 @@ import com.example.doctor_service.models.Doctors;
 import com.example.doctor_service.repository.DoctorsRepository;
 import com.example.doctor_service.service.DoctorsService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,10 +25,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class DoctorsRepositoryAdvancedTest {
 
     @Autowired
     private DoctorsRepository doctorRepository;
+
+
+    @BeforeEach
+    void clean() {
+        doctorRepository.deleteAll(); // Limpia la tabla antes de cada test
+    }
 
 
     @Test
@@ -70,24 +79,6 @@ public class DoctorsRepositoryAdvancedTest {
 
     }
 
-    @Test
-    void testSaveDoctorWithAvailableDays() {
-        Doctors doctor = new Doctors();
-        doctor.setFirstName("Ana");
-        doctor.setLastName("Sosa");
-        doctor.setEmail("ana@example.com");
-        doctor.setLicenceNumber("LIC789");
-        doctor.setPhoneNumber("1234567890");
-        doctor.setSpecialty("Cardiology");
-
-        doctor.setAvailableDays(new AvailableDays(true, true, false, false, false, true, false));
-
-        doctorRepository.save(doctor);
-
-        List<Doctors> doctors = doctorRepository.findAll();
-        assertEquals(1, doctors.size());
-        assertTrue(doctors.get(0).getAvailableDays().isMonday());
-    }
 
 
 

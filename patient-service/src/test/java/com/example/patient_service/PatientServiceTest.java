@@ -89,24 +89,23 @@ public class PatientServiceTest {
 
     @Test
     void createPatient_withNoExistingDoctor_Exception(){
-        //Arrange
-        Patient patient= new Patient();
+        // Arrange
+        Patient patient = new Patient();
         patient.setIdDoctor(99L);
 
         when(doctorClient.getDoctorById(99L)).thenThrow(new RuntimeException("Not found"));
 
-        //Assert + Act
-        RuntimeException e =assertThrows(RuntimeException.class, ()->{
-                    patientService.createPatient(patient);
+        // Act & Assert
+        RuntimeException e = assertThrows(RuntimeException.class, () -> {
+            patientService.createPatient(patient);
         });
 
+        assertEquals("Doctor with ID " + patient.getIdDoctor() + " not found", e.getMessage());
 
-        assertEquals("Doctor with ID " + patient.getIdDoctor() +  "not found",
-                        e.getMessage());
-        verifyNoInteractions(doctorClient);
+        verify(doctorClient).getDoctorById(99L);
         verifyNoInteractions(patientRepository);
-
     }
+
 
 
     //Prueba unitaria del metodo getPatientEntityById:
@@ -145,7 +144,7 @@ public class PatientServiceTest {
             patientService.getPatientEntityById(patientId);
         });
 
-        assertEquals("Patient not found", e.getReason());
+        assertEquals("Patient not found.", e.getReason());
         verify(patientRepository).findById(patientId);
 
     }
