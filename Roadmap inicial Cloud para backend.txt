@@ -1,0 +1,181 @@
+Roadmap inicial Cloud para backend
+
+🧭 ¿Por dónde empezar? 
+1. Conceptos clave (indispensables)
+¿Qué es la nube? ¿Qué ofrecen los proveedores?
+	✅ ¿Qué es trabajar “en la nube”?
+	Significa desplegar y ejecutar tus aplicaciones, bases de datos, archivos, etc., en servidores remotos, no en tu computadora ni en un 	servidor local.
+
+
+Tipos de servicio:
+🌥️ ¿Qué son IaaS, PaaS y SaaS?
+	Son formas diferentes de usar la nube, según cuánta responsabilidad querés tener vos y cuánta se encarga el proveedor (por ejemplo AWS).
+
+🧱 1. IaaS — Infraestructura como servicio
+	Vos manejás todo el software. Ellos te dan las máquinas (servidores virtuales).
+
+✅ ¿Qué te da AWS? 	(qué hace AWS por vos y qué no tenés que hacer manualmente)
+	Una máquina virtual (ej: EC2)
+
+	Conexión a internet
+
+	Almacenamiento
+
+🔧 ¿Qué hacés vos?
+	Instalar Java, Docker, tu app, etc.
+
+	Configurar puertos, seguridad, base de datos
+
+	Hacer todo el mantenimiento
+🧠 Acá, AWS te da la infraestructura, pero vos hacés el trabajo de instalar y mantener todo.
+
+🧑‍💻 Ejemplo:
+Levantás un EC2 y ahí corrés tu app Spring Boot.
+
+🏗️ 2. PaaS — Plataforma como servicio
+	Vos subís solo tu código. El proveedor se encarga del resto (servidor, sistema operativo, etc.).
+
+✅ ¿Qué te da AWS?
+	Un entorno listo para correr tu app
+
+	Ej: Elastic Beanstalk, Google App Engine, AWS Fargate
+
+🔧 ¿Qué hacés vos?
+	Subís tu app (jar o Docker)
+
+	Configurás variables de entorno y listo
+
+🧑‍💻 Ejemplo:
+Usás Fargate para correr un contenedor con tu microservicio, sin pensar en máquinas ni RAM.
+
+🧠 Acá, vos te olvidás de la máquina. AWS corre tu app directamente como servicio.
+
+💻 3. SaaS — Software como servicio
+	Todo está hecho. Vos usás la app directamente desde el navegador. No programás nada.
+
+✅ ¿Qué te da AWS u otra empresa?
+	Un software listo para usar
+
+	No te preocupás por código, deploy, seguridad, nada
+
+🧑‍💻 Ejemplo:
+	Gmail
+
+	Google Docs
+
+	ChatGPT 😉
+
+	GitHub (en parte)
+
+
+🌍 Regiones y Zonas
+✅ Región
+Una región es una ubicación geográfica específica donde un proveedor de nube (como AWS, Azure o Google Cloud) tiene varios centros de datos.
+
+Ejemplos:
+
+eu-west-1 (Irlanda en AWS)
+
+us-central1 (Iowa en Google Cloud)
+
+✅ Zona de disponibilidad (Availability Zone)
+Dentro de cada región, hay una o más zonas, que son centros de datos físicos separados, pero interconectados.
+
+Ejemplo: eu-west-1a, eu-west-1b, eu-west-1c
+
+Cada zona tiene su propia infraestructura de energía, red y refrigeración.
+
+⚙️ Escalabilidad
+La capacidad de un sistema en la nube para aumentar o disminuir automáticamente sus recursos (como CPU, memoria o instancias) según la demanda.
+
+Ejemplo: si una app recibe muchos usuarios, se pueden agregar más servidores automáticamente.
+
+🔁 Alta disponibilidad
+Es la capacidad de un sistema para mantenerse en funcionamiento casi todo el tiempo, incluso si ocurre un fallo en algún componente.
+
+Se logra con servidores redundantes y distribución geográfica.
+
+🔄 Balanceo de carga
+Es una técnica que distribuye automáticamente el tráfico de red o solicitudes entre múltiples servidores para evitar sobrecargas y asegurar un rendimiento óptimo.
+
+Beneficio: los usuarios siempre obtienen una respuesta rápida.
+
+💰 Facturación (Cuidado con los costos)
+Los servicios en la nube suelen cobrarse por uso, es decir, pagas por lo que consumes (almacenamiento, tiempo de uso, tráfico, etc.).
+
+Consejo: Monitorea los recursos y configura alertas para evitar sorpresas en la factura.
+
+👤 Usuarios en AWS
+🔐 ¿Qué es un usuario en AWS IAM?
+Un usuario de IAM representa a una persona o aplicación que necesita acceder a los servicios de AWS.
+Cada usuario puede tener:
+
+Un nombre único.
+
+Claves de acceso para la consola o para usar la CLI/API.
+
+Permisos específicos asignados mediante políticas.
+
+| Elemento              | Descripción                                                                                                |
+| --------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Usuario IAM**       | Cuenta individual con credenciales. Se usa para el acceso controlado.                                      |
+| **Grupo IAM**         | Conjunto de usuarios con permisos comunes. Facilita la administración.                                     |
+| **Política (Policy)** | Documento en formato JSON que define los permisos que se otorgan o deniegan.                               |
+| **Rol (Role)**        | Identidad temporal con permisos específicos. Ideal para servicios y cuentas externas.                      |
+| **Root user**         | El usuario principal de la cuenta AWS. Tiene **todos los permisos**. Se recomienda **no usarlo a diario**. |
+
+
+⚠️ Buenas prácticas en el manejo de usuarios
+❌ No usar el root user excepto para tareas críticas.
+
+✅ Crear usuarios individuales para cada persona o servicio.
+
+✅ Usar grupos IAM para asignar permisos comunes.
+
+✅ Activar MFA (Autenticación Multifactor) para mayor seguridad.
+
+✅ Aplicar el principio de menor privilegio: dar solo los permisos necesarios.
+
+
+
+
+
+Facturación (cuidado con los costos)
+
+2. Elegí un proveedor de Cloud (uno para empezar)
+| Proveedor       | Recomendado para empezar   | Gratuito                 |
+| --------------- | -------------------------- | ------------------------ |
+| ✅ **AWS**       | Sí (más usado en empresas) | Sí (12 meses Free Tier)  |
+| ☁️ Azure        | Usado en empresas grandes  | Sí                       |
+| ☁️ Google Cloud | Intuitivo y moderno        | Sí (300 USD por 90 días) |
+
+3. Aprendé a hacer deploy de tu app (con Docker)
+Empieza por lo práctico: desplegar una app Spring Boot (como la tuya) en la nube, por ejemplo:
+
+	📦 Dockerizar tu app 
+	☁️ Subir la imagen a Docker Hub
+
+	🚀 Desplegarla en:
+
+	AWS ECS (con Fargate)
+
+	Google Cloud Run
+
+	Render / Railway (más fácil, menos potente)
+
+4. Bases de datos en la nube
+	Crear una base de datos en RDS (AWS) o Cloud SQL (Google)
+
+	Conectarla a tu microservicio
+
+	Aprender sobre backups, seguridad, conexiones
+
+5. DevOps & CI/CD en la nube
+	Automatizar tu flujo con:
+
+	GitHub Actions
+
+	AWS CodePipeline
+
+	GitLab CI
+

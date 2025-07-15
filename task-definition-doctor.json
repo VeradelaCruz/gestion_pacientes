@@ -1,0 +1,24 @@
+{
+  "family": "gestion-pacientes-doctor-service",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "doctor-service",
+      "image": "542726314195.dkr.ecr.eu-north-1.amazonaws.com/gestion-pacientes-doctor-service:latest",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8081,
+          "hostPort": 8081,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::542726314195:role/ecsTaskExecutionRole"
+}
