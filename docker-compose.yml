@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   eureka-service:
     build: eureka-service
@@ -18,6 +16,7 @@ services:
       - gestionpacientes-network
     depends_on:
       - eureka-service
+      - config-server
 
   doctor-service:
     build: doctor-service
@@ -28,7 +27,41 @@ services:
       - gestionpacientes-network
     depends_on:
       - eureka-service
+      - config-server
 
+  api-gateway:
+    build: api-gateway
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    networks:
+      - gestionpacientes-network
+    depends_on:
+      - eureka-service
+      - config-server
+
+  appointment-service:
+    build: appointment-service
+    mem_limit: 512m
+    ports:
+      - "8083:8083"
+    networks:
+      - gestionpacientes-network
+    depends_on:
+      - eureka-service
+      - config-server
+
+  config-server:
+    build: config-server
+    mem_limit: 512m
+    ports:
+      - "8084:8084"
+    networks:
+      - gestionpacientes-network
+    depends_on:
+      - eureka-service
+
+  
 networks:
   gestionpacientes-network:
     driver: bridge

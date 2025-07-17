@@ -1,25 +1,25 @@
 {
-  "family": "gestion-pacientes-doctor-service",
+  "family": "gestion-pacientes-api-gateway",
   "networkMode": "awsvpc",
   "containerDefinitions": [
     {
-      "name": "doctor-service",
-      "image": "542726314195.dkr.ecr.eu-north-1.amazonaws.com/gestion-pacientes-doctor-service:latest",
+      "name": "api-gateway",
+      "image": "542726314195.dkr.ecr.eu-north-1.amazonaws.com/gestion-pacientes-api-gateway:latest",
       "cpu": 256,
       "memory": 512,
       "essential": true,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/gestion-pacientes-doctor-service",
+          "awslogs-group": "/ecs/gestion-pacientes-api-gateway",
           "awslogs-region": "eu-north-1",
           "awslogs-stream-prefix": "ecs"
         }
       },
       "portMappings": [
         {
-          "containerPort": 8081,
-          "hostPort": 8081,
+          "containerPort": 8080,
+          "hostPort": 8080,
           "protocol": "tcp"
         }
       ]

@@ -1,22 +1,30 @@
 {
-  "family": "gestion-pacientes-patient-service",
-  "networkMode": "awsvpc",
   "containerDefinitions": [
     {
       "name": "patient-service",
       "image": "542726314195.dkr.ecr.eu-north-1.amazonaws.com/gestion-pacientes-patient-service:latest",
       "cpu": 256,
       "memory": 512,
-      "essential": true,
       "portMappings": [
         {
           "containerPort": 8082,
           "hostPort": 8082,
           "protocol": "tcp"
         }
-      ]
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/gestion-pacientes-patient-service",
+          "awslogs-region": "eu-north-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
     }
   ],
+  "family": "gestion-pacientes-patient-service",
+  "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
